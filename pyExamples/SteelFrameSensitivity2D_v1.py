@@ -7,6 +7,7 @@
 - Run the source code in your favorite Python program and should see following plot.
 """
 
+
 import time
 import sys
 import numpy as np
@@ -17,21 +18,22 @@ import openseespy.opensees as ops
 # |                              OpenSees Header                                  |
 # +===============================================================================+
 nSpaces = 90
-OpenSeesHeader = {"header_00": " ",
-                  "header_01": nSpaces * "=",
-                  "header_02": "OpenSees -- Open System For Earthquake Engineering Simulation",
-                  "header_03": "Pacific Earthquake Engineering Research Center (PEER)",
-                  "header_04": "OpenSees " + ops.version() + " 64-Bit",
-                  "header_05": "Python " + sys.version,
-                  "header_06": " ",
-                  "header_07": "(c) Copyright 1999-2021 The Regents of the University of California",
-                  "header_08": "All Rights Reserved",
-                  "header_09": "(Copyright and Disclaimer @ http://www.berkeley.edu/OpenSees/copyright.html)",
-                  "header_10": nSpaces * "=",
-                  "header_11": " ",
-                  }
-for i in OpenSeesHeader.keys():
-    print(OpenSeesHeader[i].center(nSpaces, " "))
+OpenSeesHeader = {
+    "header_00": " ",
+    "header_01": nSpaces * "=",
+    "header_02": "OpenSees -- Open System For Earthquake Engineering Simulation",
+    "header_03": "Pacific Earthquake Engineering Research Center (PEER)",
+    "header_04": f"OpenSees {ops.version()} 64-Bit",
+    "header_05": f"Python {sys.version}",
+    "header_06": " ",
+    "header_07": "(c) Copyright 1999-2021 The Regents of the University of California",
+    "header_08": "All Rights Reserved",
+    "header_09": "(Copyright and Disclaimer @ http://www.berkeley.edu/OpenSees/copyright.html)",
+    "header_10": nSpaces * "=",
+    "header_11": " ",
+}
+for value in OpenSeesHeader.values():
+    print(value.center(nSpaces, " "))
 
 
 def title(title="Title Example", nSpaces=nSpaces):
@@ -122,10 +124,7 @@ def run_sensitivity_pushover_analysis(ctrlNode, baseNodes, dof, Dincr, max_disp,
     for sens in SensParam:
         outputs[f"sensLambda_{sens}"] = np.array([]),
 
-    nodeList = []
-    for node in baseNodes:
-        nodeList.append(f"- ops.nodeReaction({node}, dof) ")
-
+    nodeList = [f"- ops.nodeReaction({node}, dof) " for node in baseNodes]
     nodeList = "".join(nodeList)
     currentDisp = ops.nodeDisp(ctrlNode, dof)
     ok = 0
@@ -328,7 +327,7 @@ for s in range(0, rows):
         plt.ylabel(r"$V_b$ [kip]")
         if s == 0:
             plt.title(r"Displacement Control", fontsize=14)
-        if s == 1:
+        elif s == 1:
             plt.ylabel(r"Base Shear, $V_b$ [kip]")
         plt.legend(fontsize=9)
 

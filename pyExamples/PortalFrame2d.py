@@ -69,7 +69,7 @@ yLoc = 0.
 for j in range(0, numFloor + 1):
 
     xLoc = 0.
-    for i in range(0, numBay + 1):
+    for _ in range(0, numBay + 1):
         node(nodeTag, xLoc, yLoc)
         xLoc += bayWidth
         nodeTag += 1
@@ -87,9 +87,8 @@ fix(3, 1, 1, 1)
 # rigid floor constraint & masses
 nodeTagR = 5
 nodeTag = 4
-for j in range(1, numFloor + 1):
-    for i in range(0, numBay + 1):
-
+for _ in range(1, numFloor + 1):
+    for _ in range(0, numBay + 1):
         if nodeTag != nodeTagR:
             equalDOF(nodeTagR, nodeTag, 1)
         else:

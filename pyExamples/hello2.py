@@ -10,17 +10,16 @@ datatype = 'str'
 if pid == 0:
     print('Random: ')
 
-    for i in range(1, np):
+    for _ in range(1, np):
         data = ops.recv('-pid', 'ANY')
         print(data)
-else:
-    if datatype == 'str':
-        ops.send('-pid', 0, 'Hello from {}'.format(pid))
-    elif datatype == 'float':
-        ops.send('-pid', 0, float(pid))
-    elif datatype == 'int':
-        ops.send('-pid', 0, int(pid))
+elif datatype == 'float':
+    ops.send('-pid', 0, float(pid))
+elif datatype == 'int':
+    ops.send('-pid', 0, int(pid))
 
+elif datatype == 'str':
+    ops.send('-pid', 0, f'Hello from {pid}')
 ops.barrier()
 
 if pid == 0:
@@ -29,23 +28,22 @@ if pid == 0:
     for i in range(1, np):
         data = ops.recv('-pid', i)
         print(data)
-else:
-    if datatype == 'str':
-        ops.send('-pid', 0, 'Hello from {}'.format(pid))
-    elif datatype == 'float':
-        ops.send('-pid', 0, float(pid))
-    elif datatype == 'int':
-        ops.send('-pid', 0, int(pid))
+elif datatype == 'float':
+    ops.send('-pid', 0, float(pid))
+elif datatype == 'int':
+    ops.send('-pid', 0, int(pid))
 
+elif datatype == 'str':
+    ops.send('-pid', 0, f'Hello from {pid}')
 ops.barrier()
 if pid == 0:
     print('\nBroadcasting: ')
-    if datatype == 'str':
-        ops.Bcast('Hello from {}'.format(pid))
-    elif datatype == 'float':
+    if datatype == 'float':
         ops.Bcast(float(pid))
     elif datatype == 'int':
         ops.Bcast(int(pid))
+    elif datatype == 'str':
+        ops.Bcast(f'Hello from {pid}')
 else:
     data = ops.Bcast()
     print(data)

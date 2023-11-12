@@ -4,6 +4,7 @@ Created on Tue Apr 23 13:13:55 2019
 
 @author: pchi893
 """
+
 # Converted to openseespy by: Pavan Chigullapally       
 #                         University of Auckland
 #                         Email: pchi893@aucklanduni.ac.nz    
@@ -63,7 +64,7 @@ ksi = kip/math.pow(inch,2)
 psi = ksi/1000
 lbf = psi*inch*inch
 pcf = lbf/math.pow(ft,3)
-inch2 = inch*inch
+inch2 = inch**2
 inch4 = math.pow(inch,4)
 cm = inch/2.54
 PI = 2 * math.asin(1.0)
@@ -72,7 +73,7 @@ Ubig = 1e10
 Usmall = 1/Ubig
 
 
-op.model('basic', '-ndm', 2, '-ndf', 3) 
+op.model('basic', '-ndm', 2, '-ndf', 3)
 LCol = 36.0*ft   # column length
 Weight = 2000.0*kip   # superstructure weight
 

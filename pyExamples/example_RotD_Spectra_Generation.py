@@ -58,6 +58,7 @@ The 'GMi_Spectra.txt' file will consist of space-saperated file with:
 
 """
 
+
 ##### ================== INPUTS  ================== #####
 
 # Path where the library files 'opensees.pyd' and 'LICENSE.rst' are included (for further details go to https://openseespydoc.readthedocs.io/en/latest/windows.html)
@@ -97,8 +98,8 @@ wipe()
 
 # Getting Number of Ground Motions from the GM folder
 GMdir = os.getcwd()
-No_of_GMs = int(len(fnmatch.filter(os.listdir(GMdir),'*.AT2'))/2)
-print('\nGenerating Spectra for {} provided GMs \n\n'.format(np.round(No_of_GMs,0)))
+No_of_GMs = len(fnmatch.filter(os.listdir(GMdir),'*.AT2')) // 2
+print(f'\nGenerating Spectra for {np.round(No_of_GMs, 0)} provided GMs \n\n')
 
 # Initializations
 DISPLACEMENTS = pd.DataFrame(columns=['uX','uY'])
@@ -277,7 +278,14 @@ for iEQ in range(1,No_of_GMs+1):
         
         def plot_spectra(PlotTitle,SpectraType,iGM):
             axes = fig.add_subplot(1, 1, 1)
-            axes.plot(GM_SPECTRA['Period(s)'] , GM_SPECTRA[SpectraType] , '.-',lw=7,markersize=20, label='GM'+str(iGM)) 
+            axes.plot(
+                GM_SPECTRA['Period(s)'],
+                GM_SPECTRA[SpectraType],
+                '.-',
+                lw=7,
+                markersize=20,
+                label=f'GM{str(iGM)}',
+            )
             axes.set_xlabel('Period (sec)',fontsize=30,fontweight='bold')
             axes.set_ylabel(SpectraType,fontsize=30,fontweight='bold')
             axes.set_title(PlotTitle,fontsize=40,fontweight='bold')
@@ -285,7 +293,7 @@ for iEQ in range(1,No_of_GMs+1):
             axes.grid(True)
             axes.set_xlim(0, np.ceil(max(GM_SPECTRA['Period(s)'])))
             axes.set_ylim(0, np.ceil(max(GM_SPECTRA[SpectraType])))
-            axes.axhline(linewidth=10,color='black')        
+            axes.axhline(linewidth=10,color='black')
             axes.axvline(linewidth=10,color='black')
             axes.hold(True)
             axes.legend(fontsize =30)

@@ -7,6 +7,7 @@
 - Run the source code in your favorite Python program and should see following plot.
 """
 
+
 import time
 import sys
 import numpy as np
@@ -17,21 +18,22 @@ import openseespy.opensees as ops
 # |                              OpenSees Header                                  |
 # +===============================================================================+
 nSpaces = 90
-OpenSeesHeader = {"header_00": " ",
-                  "header_01": nSpaces * "=",
-                  "header_02": "OpenSees -- Open System For Earthquake Engineering Simulation",
-                  "header_03": "Pacific Earthquake Engineering Research Center (PEER)",
-                  "header_04": "OpenSees " + ops.version() + " 64-Bit",
-                  "header_05": "Python " + sys.version,
-                  "header_06": " ",
-                  "header_07": "(c) Copyright 1999-2021 The Regents of the University of California",
-                  "header_08": "All Rights Reserved",
-                  "header_09": "(Copyright and Disclaimer @ http://www.berkeley.edu/OpenSees/copyright.html)",
-                  "header_10": nSpaces * "=",
-                  "header_11": " ",
-                  }
-for i in OpenSeesHeader.keys():
-    print(OpenSeesHeader[i].center(nSpaces, " "))
+OpenSeesHeader = {
+    "header_00": " ",
+    "header_01": nSpaces * "=",
+    "header_02": "OpenSees -- Open System For Earthquake Engineering Simulation",
+    "header_03": "Pacific Earthquake Engineering Research Center (PEER)",
+    "header_04": f"OpenSees {ops.version()} 64-Bit",
+    "header_05": f"Python {sys.version}",
+    "header_06": " ",
+    "header_07": "(c) Copyright 1999-2021 The Regents of the University of California",
+    "header_08": "All Rights Reserved",
+    "header_09": "(Copyright and Disclaimer @ http://www.berkeley.edu/OpenSees/copyright.html)",
+    "header_10": nSpaces * "=",
+    "header_11": " ",
+}
+for value in OpenSeesHeader.values():
+    print(value.center(nSpaces, " "))
 
 
 def title(title="Title Example", nSpaces=nSpaces):

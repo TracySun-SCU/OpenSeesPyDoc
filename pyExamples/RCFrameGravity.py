@@ -37,8 +37,8 @@ uniaxialMaterial('Concrete01', 2, -5.0, -0.002, 0.0, -0.006)
 
 # STEEL
 # Reinforcing steel
-fy = 60.0;  # Yield stress
-E = 30000.0;  # Young's modulus
+fy = 60.0
+E = 30000.0
 #                         tag  fy E0    b
 uniaxialMaterial('Steel01', 3, fy, E, 0.01)
 
@@ -107,8 +107,7 @@ element('elasticBeamColumn', 3, 3, 4, 360.0, 4030.0, 8640.0, 2)
 # --------------------
 
 #  a parameter for the axial load
-P = 180.0;  # 10% of axial capacity of columns
-
+P = 180.0
 # Create a Plain load pattern with a Linear TimeSeries
 timeSeries('Linear', 1)
 pattern('Plain', 1, 1)
@@ -170,15 +169,12 @@ analyze(10)
 u3 = nodeDisp(3, 2)
 u4 = nodeDisp(4, 2)
 
-results = open('results.out', 'a+')
-
-if abs(u3 + 0.0183736) < 1e-6 and abs(u4 + 0.0183736) < 1e-6:
-    results.write('PASSED : RCFrameGravity.py\n')
-    print("Passed!")
-else:
-    results.write('FAILED : RCFrameGravity.py\n')
-    print("Failed!")
-
-results.close()
+with open('results.out', 'a+') as results:
+    if abs(u3 + 0.0183736) < 1e-6 and abs(u4 + 0.0183736) < 1e-6:
+        results.write('PASSED : RCFrameGravity.py\n')
+        print("Passed!")
+    else:
+        results.write('FAILED : RCFrameGravity.py\n')
+        print("Failed!")
 
 print("==========================")

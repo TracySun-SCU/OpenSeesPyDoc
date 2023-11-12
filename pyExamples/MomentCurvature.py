@@ -78,8 +78,7 @@ colWidth = 15
 colDepth = 24 
 
 cover = 1.5
-As = 0.60;     # area of no. 7 bars
-
+As = 0.60
 # some variables derived from the parameters
 y1 = colDepth/2.0
 z1 = colWidth/2.0
@@ -124,16 +123,13 @@ numIncr = 100
 # Call the section analysis procedure
 MomentCurvature(1, P, Ky*mu, numIncr)
 
-results = open('results.out','a+')
-
-u = nodeDisp(2,3)
-if abs(u-0.00190476190476190541)<1e-12:
-    results.write('PASSED : MomentCurvature.py\n');
-    print("Passed!")
-else:
-    results.write('FAILED : MomentCurvature.py\n');
-    print("Failed!")
-
-results.close()
+with open('results.out','a+') as results:
+    u = nodeDisp(2,3)
+    if abs(u-0.00190476190476190541)<1e-12:
+        results.write('PASSED : MomentCurvature.py\n');
+        print("Passed!")
+    else:
+        results.write('FAILED : MomentCurvature.py\n');
+        print("Failed!")
 
 print("==========================")

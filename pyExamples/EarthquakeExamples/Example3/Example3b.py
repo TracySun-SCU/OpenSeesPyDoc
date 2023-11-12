@@ -4,6 +4,7 @@ Created on Mon Apr 22 15:12:06 2019
 
 @author: pchi893
 """
+
 # Converted to openseespy by: Pavan Chigullapally       
 #                         University of Auckland  
 #                         Email: pchi893@aucklanduni.ac.nz 
@@ -54,23 +55,20 @@ test = {1:'NormDispIncr', 2: 'RelativeEnergyIncr', 4: 'RelativeNormUnbalance',5:
 algorithm = {1:'KrylovNewton', 2: 'SecantNewton' , 4: 'RaphsonNewton',5: 'PeriodicNewton', 6: 'BFGS', 7: 'Broyden', 8: 'NewtonLineSearch'}
 
 for i in test:
-    for j in algorithm:
+    for j, value in algorithm.items():
 
         if ok != 0:
             if j < 4:
-                op.algorithm(algorithm[j], '-initial')
-                
+                op.algorithm(value, '-initial')
+
             else:
                 op.algorithm(algorithm[j])
-                
+
             op.test(test[i], Tol, 1000)
-            ok = op.analyze(Nsteps)                            
-            print(test[i], algorithm[j], ok)             
+            ok = op.analyze(Nsteps)
+            print(test[i], algorithm[j], ok)
             if ok == 0:
                 break
-        else:
-            continue
-
 u2 = op.nodeDisp(2, 1)
 print("u2 = ", u2)
 
