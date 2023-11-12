@@ -113,16 +113,13 @@ while ok == 0 and currentDisp < maxU:
 
     currentDisp = nodeDisp(3, 1)
 
-results = open('results.out', 'a+')
-
-if ok == 0:
-    results.write('PASSED : RCFramePushover.py\n')
-    print("Passed!")
-else:
-    results.write('FAILED : RCFramePushover.py\n')
-    print("Failed!")
-
-results.close()
+with open('results.out', 'a+') as results:
+    if ok == 0:
+        results.write('PASSED : RCFramePushover.py\n')
+        print("Passed!")
+    else:
+        results.write('FAILED : RCFramePushover.py\n')
+        print("Failed!")
 
 # Print the state at node 3
 # print node 3

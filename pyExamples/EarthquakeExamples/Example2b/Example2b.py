@@ -4,6 +4,7 @@ Created on Mon Apr 22 15:12:06 2019
 
 @author: pchi893
 """
+
 # Converted to openseespy by: Pavan Chigullapally       
 #                         University of Auckland  
 #                         Email: pchi893@aucklanduni.ac.nz 
@@ -56,7 +57,7 @@ if not os.path.exists(dir):
 #########################################################################################################################################################################
 
 #########################################################################################################################################################################
-op.model('basic', '-ndm', 2, '-ndf', 3) 
+op.model('basic', '-ndm', 2, '-ndf', 3)
 LCol = 432.0 # column length
 Weight = 2000.0 # superstructure weight
 
@@ -131,7 +132,7 @@ op.analysis('Static') # define type of analysis static or transient
 op.analyze(NstepGravity) # apply gravity
 
 op.loadConst('-time', 0.0) #maintain constant gravity loads and reset time to zero
- 
+
 #applying Dynamic Ground motion analysis
 GMdirection = 1
 GMfile = 'BM68elc.acc'
@@ -185,24 +186,21 @@ tCurrent = op.getTime()
 test = {1:'NormDispIncr', 2: 'RelativeEnergyIncr', 4: 'RelativeNormUnbalance',5: 'RelativeNormDispIncr', 6: 'NormUnbalance'}
 algorithm = {1:'KrylovNewton', 2: 'SecantNewton' , 4: 'RaphsonNewton',5: 'PeriodicNewton', 6: 'BFGS', 7: 'Broyden', 8: 'NewtonLineSearch'}
 
-for i in test:
+for i, value in test.items():
     for j in algorithm:
 
         if ok != 0:
             if j < 4:
                 op.algorithm(algorithm[j], '-initial')
-                
+
             else:
                 op.algorithm(algorithm[j])
-                
-            op.test(test[i], Tol, 1000)
-            ok = op.analyze(Nsteps, DtAnalysis)                            
-            print(test[i], algorithm[j], ok)             
+
+            op.test(value, Tol, 1000)
+            ok = op.analyze(Nsteps, DtAnalysis)
+            print(test[i], algorithm[j], ok)
             if ok == 0:
                 break
-        else:
-            continue
-
 u2 = op.nodeDisp(2, 1)
 print("u2 = ", u2)
 

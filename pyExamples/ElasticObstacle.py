@@ -30,9 +30,9 @@ thk = 0.012
 kappa = -1.0
 
 rhos = 2500.0
-A = thk*thk
+A = thk**2
 E = 1e6
-Iz = thk*thk*thk*thk/12.0
+Iz = thk**2 * thk * thk / 12.0
 bmass = A*Hb*rhos
 
 # analysis

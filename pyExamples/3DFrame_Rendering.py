@@ -42,23 +42,23 @@ nodeTag = 1
 #  - floor at a time
 zLoc = 0.
 for k in range(0, numFloor + 1):
-	xLoc = 0. 
-	for i in range(0, numBayX + 1):
+	xLoc = 0.
+	for _ in range(0, numBayX + 1):
 		yLoc = 0.
-		for j in range(0, numBayY + 1):
+		for _ in range(0, numBayY + 1):
 			ops.node(nodeTag, xLoc, yLoc, zLoc)
 			ops.mass(nodeTag, massX, massX, 0.01, 1.0e-10, 1.0e-10, 1.0e-10)
 			if k == 0:
 				ops.fix(nodeTag, 1, 1, 1, 1, 1, 1)
-				
+
 			yLoc += bayWidthY
 			nodeTag += 1
-			
+
 		xLoc += bayWidthX
 
 	if k < numFloor:
 		storyHeight = storyHeights[k]
-	
+
 	zLoc += storyHeight
 
 # add column element
@@ -68,9 +68,9 @@ ops.geomTransf(coordTransf, 2, 0, 0, 1)
 eleTag = 1
 nodeTag1 = 1
 
-for k in range(0, numFloor):
-	for i in range(0, numBayX+1):
-		for j in range(0, numBayY+1):
+for _ in range(0, numFloor):
+	for _ in range(0, numBayX+1):
+		for _ in range(0, numBayY+1):
 			nodeTag2 = nodeTag1 + (numBayX+1)*(numBayY+1)
 			iNode = ops.nodeCoord(nodeTag1)
 			jNode = ops.nodeCoord(nodeTag2)
@@ -81,23 +81,23 @@ for k in range(0, numFloor):
 
 nodeTag1 = 1+ (numBayX+1)*(numBayY+1)
 #add beam elements
-for j in range(1, numFloor + 1):
-	for i in range(0, numBayX):
-		for k in range(0, numBayY+1):
+for _ in range(1, numFloor + 1):
+	for _ in range(0, numBayX):
+		for _ in range(0, numBayY+1):
 			nodeTag2 = nodeTag1 + (numBayY+1)
 			iNode = ops.nodeCoord(nodeTag1)
 			jNode = ops.nodeCoord(nodeTag2)
 			ops.element('elasticBeamColumn', eleTag, nodeTag1, nodeTag2, 50., E, 1000., 1000., 2150., 2150., 2, '-mass', M, massType)
 			eleTag += 1
 			nodeTag1 += 1
-		
+
 	nodeTag1 += (numBayY+1)
 
 nodeTag1 = 1+ (numBayX+1)*(numBayY+1)
 #add beam elements
-for j in range(1, numFloor + 1):
-	for i in range(0, numBayY+1):
-		for k in range(0, numBayX):
+for _ in range(1, numFloor + 1):
+	for _ in range(0, numBayY+1):
+		for _ in range(0, numBayX):
 			nodeTag2 = nodeTag1 + 1
 			iNode = ops.nodeCoord(nodeTag1)
 			jNode = ops.nodeCoord(nodeTag2)

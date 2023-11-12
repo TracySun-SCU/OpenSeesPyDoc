@@ -72,7 +72,7 @@ node(22,0.2,0.8,0)
 node(23,0.5,0.8,0)
 node(24,0.8,0.8,0)
 node(25,1.0,0.8,0)
-                 
+
 node(26,0.0,1.0,0)
 node(27,0.2,1.0,0)
 node(28,0.5,1.0,0)
@@ -84,7 +84,7 @@ node(32,0.2,1.2,0)
 node(33,0.5,1.2,0)
 node(34,0.8,1.2,0)
 node(35,1.0,1.2,0)
-                 
+
 node(36,0.0,1.4,0)
 node(37,0.2,1.4,0)
 node(38,0.5,1.4,0)
@@ -96,13 +96,13 @@ node(42,0.2,1.6,0)
 node(43,0.5,1.6,0)
 node(44,0.8,1.6,0)
 node(45,1.0,1.6,0)
-                 
+
 node(46,0.0,1.8,0)
 node(47,0.2,1.8,0)
 node(48,0.5,1.8,0)
 node(49,0.8,1.8,0)
 node(50,1.0,1.8,0)
-                
+
 node(51,0.0,2.0,0)
 node(52,0.2,2.0,0)
 node(53,0.5,2.0,0)
@@ -248,13 +248,12 @@ wipeAnalysis()
 ### Cyclic ANALYSIS
 ###############################
 
-if(AnalysisType=="Cyclic"):
-	
+if AnalysisType == "Cyclic":
 	# This is a load controlled analysis. The input load file "RCshearwall_Load_input.txt" should be in the 
 	# .. same folder as the model file.
-	
+
 	print("<<<< Running Cyclic Analysis >>>>")
-	
+
 	timeSeries('Path',2,'-dt',0.1,'-filePath','RCshearwall_Load_input.txt')
 	pattern('Plain',2,2)
 	sp(53,1,1)								# construct a single-point constraint object added to the LoadPattern.
@@ -269,33 +268,25 @@ if(AnalysisType=="Cyclic"):
 	analyze(700)
 
 
-#######################
-# PUSHOVER ANALYSIS
-#######################
-
-if(AnalysisType=="Pushover"):
-	
+elif AnalysisType == "Pushover":
 	print("<<<< Running Pushover Analysis >>>>")
 
 	# create a plain load pattern for pushover analysis
 	pattern("Plain", 2, 1)
-	
-	ControlNode=53
-	ControlDOF=1
-	MaxDisp= 0.020
-	DispIncr=0.00001
-	NstepsPush=int(MaxDisp/DispIncr)
-	
+
+	ControlNode = 53
 	load(ControlNode, 1.00, 0.0, 0.0, 0.0, 0.0, 0.0)	# Apply a unit reference load in DOF=1
-	
+
 	system("BandGeneral")
 	numberer("RCM")
 	constraints('Penalty',1e20,1e20)
+	ControlDOF = 1
+	DispIncr = 0.00001
 	integrator("DisplacementControl", ControlNode, ControlDOF, DispIncr)
 	algorithm('KrylovNewton')
 	test('NormDispIncr',1e-05, 1000, 2)
 	analysis("Static")
-	
+
 	# Create a folder to put the output
 	PushDataDir = r'PushoverOut'
 	if not os.path.exists(PushDataDir):
@@ -303,16 +294,18 @@ if(AnalysisType=="Pushover"):
 	recorder('Node', '-file', "PushoverOut/React.out", '-closeOnWrite', '-node', 1, 2, 3, 4, 5, '-dof',1, 'reaction')
 	recorder('Node', '-file', "PushoverOut/Disp.out", '-closeOnWrite', '-node', ControlNode, '-dof',1, 'disp')
 
+	MaxDisp = 0.020
+	NstepsPush = int(MaxDisp/DispIncr)
 	# Perform pushover analysis
 	dataPush = np.zeros((NstepsPush+1,5))
 	for j in range(NstepsPush):
 		analyze(1)
 		dataPush[j+1,0] = nodeDisp(ControlNode,1)*1000		# Convert to mm
 		dataPush[j+1,1] = -getLoadFactor(2)*0.001			# Convert to kN
-		
+
 	# Read test output data to plot
 	Test = np.loadtxt("RCshearwall_TestOutput.txt", delimiter="\t", unpack="False")
-	
+
 	## Set parameters for the plot
 	plt.rcParams.update({'font.size': 7})
 	plt.figure(figsize=(4,3), dpi=100)
@@ -322,13 +315,13 @@ if(AnalysisType=="Pushover"):
 	plt.axhline(0, color='black', linewidth=0.4)
 	plt.axvline(0, color='black', linewidth=0.4)
 	plt.xlim(-25, 25)
-	plt.xticks(np.linspace(-20,20,11,endpoint=True)) 
-	plt.grid(linestyle='dotted') 
+	plt.xticks(np.linspace(-20,20,11,endpoint=True))
+	plt.grid(linestyle='dotted')
 	plt.xlabel('Displacement (mm)')
 	plt.ylabel('Base Shear (kN)')
 	plt.legend()
 	plt.savefig("PushoverOut/RCshearwall_PushoverCurve.png",dpi=1200)
 	plt.show()
-	
-	
+
+
 	print("Pushover analysis complete")

@@ -8,11 +8,7 @@ if np != 2:
 
 ops.model('basic', '-ndm', 2, '-ndf', 2)
 
-if pid == 0:
-    E = 3000.0
-else:
-    E = 6000.0
-
+E = 3000.0 if pid == 0 else 6000.0
 ops.uniaxialMaterial('Elastic', 1, E)
 
 ops.node(1, 0.0, 0.0)

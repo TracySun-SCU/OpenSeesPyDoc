@@ -37,9 +37,9 @@ kappa = -1.0
 
 # elastis structural material
 rhos = 2500.0
-A = thk * thk
+A = thk**2
 E = 1e6
-Iz = thk * thk * thk * thk / 12.0
+Iz = thk**2 * thk * thk / 12.0
 bmass = A * Hb * rhos
 
 # nonlinear structural material
@@ -54,11 +54,7 @@ dtmax = 1e-3
 dtmin = 1e-3
 totaltime = 1.0
 
-if nonlinear:
-    filename = 'obstaclenonlinear-bg'
-else:
-    filename = 'obstacle-bg'
-
+filename = 'obstaclenonlinear-bg' if nonlinear else 'obstacle-bg'
 # recorder
 ops.recorder('BgPVD', filename, 'disp', 'vel', 'pressure', '-dT', 1e-3)
 if not os.path.exists(filename):

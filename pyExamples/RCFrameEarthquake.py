@@ -38,10 +38,10 @@ mass(4, m, m, 0.0)
 record = 'elCentro'
 
 # Permform the conversion from SMD record to OpenSees record
-dt, nPts = ReadRecord.ReadRecord(record+'.at2', record+'.dat')
+dt, nPts = ReadRecord.ReadRecord(f'{record}.at2', f'{record}.dat')
 
 # Set time series to be passed to uniform excitation
-timeSeries('Path', 2, '-filePath', record+'.dat', '-dt', dt, '-factor', g)
+timeSeries('Path', 2, '-filePath', f'{record}.dat', '-dt', dt, '-factor', g)
 
 # Create UniformExcitation load pattern
 #                         tag dir 
@@ -90,9 +90,9 @@ u3 = [0.0]
 
 # Perform the transient analysis
 while ok == 0 and tCurrent < tFinal:
-    
+
     ok = analyze(1, .01)
-    
+
     # if the analysis fails try initial tangent iteration
     if ok != 0:
         print("regular newton failed .. lets try an initail stiffness for this step")
@@ -103,7 +103,7 @@ while ok == 0 and tCurrent < tFinal:
             print("that worked .. back to regular newton")
         test('NormDispIncr', 1.0e-12,  10 )
         algorithm('Newton')
-    
+
     tCurrent = getTime()
 
     time.append(tCurrent)
@@ -115,16 +115,13 @@ while ok == 0 and tCurrent < tFinal:
 eigenValues = eigen(numEigen)
 print("eigen values at end of transient:",eigenValues)
 
-results = open('results.out','a+')
-
-if ok == 0:
-    results.write('PASSED : RCFrameEarthquake.py\n');
-    print("Passed!")
-else:
-    results.write('FAILED : RCFrameEarthquake.py\n');
-    print("Failed!")
-
-results.close()
+with open('results.out','a+') as results:
+    if ok == 0:
+        results.write('PASSED : RCFrameEarthquake.py\n');
+        print("Passed!")
+    else:
+        results.write('FAILED : RCFrameEarthquake.py\n');
+        print("Failed!")
 
 plt.plot(time, u3)
 plt.ylabel('Horizontal Displacement of node 3 (in)')

@@ -4,6 +4,7 @@ Created on Mon Apr 22 15:12:06 2019
 
 @author: pchi893
 """
+
 # Converted to openseespy by: Pavan Chigullapally       
 #                         University of Auckland  
 #                         Email: pchi893@aucklanduni.ac.nz 
@@ -114,31 +115,31 @@ u3 = [0.0]
 u4 = [0.0]
 ok = 0
 
+NewmarkGamma = 0.5
+NewmarkBeta = 0.25
 while tCurrent < tFinal:
-#    ok = op.analyze(1, .01)     
+#    ok = op.analyze(1, .01)
     for i in test:
         for j in algorithm: 
             if j < 4:
                 op.algorithm(algorithm[j], '-initial')
-                
+
             else:
                 op.algorithm(algorithm[j])
             while ok == 0 and tCurrent < tFinal:
                     
-                op.test(test[i], Tol, maxNumIter)        
-                NewmarkGamma = 0.5
-                NewmarkBeta = 0.25
+                op.test(test[i], Tol, maxNumIter)
                 op.integrator('Newmark', NewmarkGamma, NewmarkBeta)
                 op.analysis('Transient')
                 ok = op.analyze(1, .01)
-                
+
                 if ok == 0 :
                     tCurrent = op.getTime()                
                     time.append(tCurrent)
                     u3.append(op.nodeDisp(3,1))
                     u4.append(op.nodeDisp(4,1))
                     print(test[i], algorithm[j], 'tCurrent=', tCurrent)
-                             
+
 import matplotlib.pyplot as plt
 plt.figure(figsize=(8,8))
 plt.plot(time, u3)

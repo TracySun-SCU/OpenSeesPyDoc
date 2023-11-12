@@ -65,7 +65,7 @@ analysis('Static')
 nstep = 100
 temp = [0.0]
 disp = [0.0]
-for i in range(nstep):
+for _ in range(nstep):
     if analyze(1) < 0:
         break
 
